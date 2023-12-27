@@ -1,4 +1,6 @@
 {
   "arrowRight": ".btn-arrow-right",
-  "submitButton": ".btn-main"
+  "submitButton": "#root > div.layout-1 > section.layout-1__main-wrapper > div.layout-1__main > section > div > section > div > div.form-auth__button",
+  "addParticipants": "#root > div.layout-1 > section.layout-1__main-wrapper > div.layout-1__main > section > div > section > div > div > div > div.picture-notice__buttons > div"
 }
+

@@ -21,24 +21,25 @@ describe("user can create a box and run it", () => {
   //пользователь 1 запускает жеребьевку
   let newBoxName = faker.word.noun({ length: { min: 5, max: 10 } });
   let wishes = faker.word.noun() + faker.word.adverb() + faker.word.adjective();
-  let maxAmount = 50;
+  let maxAmount = 150;
   let currency = "Евро";
   let inviteLink;
 
   it("user logins and create a box", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
+    
     cy.contains("Создать коробку").click();
     cy.get(boxPage.boxNameField).type(newBoxName);
     cy.get(generalElements.arrowRight).click();
     cy.get(boxPage.sixthIcon).click();
     cy.get(generalElements.arrowRight).click();
-    cy.get(boxPage.giftPriceToggle).check({ force: true });
+    cy.get(boxPage.giftPriceToggle).check({force: true});
     cy.get(boxPage.maxAnount).type(maxAmount);
     cy.get(boxPage.currency).select(currency);
     cy.get(generalElements.arrowRight).click();
     cy.get(generalElements.arrowRight).click();
-    cy.get(generalElements.arrowRight).click();
+
     cy.get(dashboardPage.createdBoxName).should("have.text", newBoxName);
     cy.get(".layout-1__header-wrapper-fixed .toggle-menu-item span")
       .invoke("text")
@@ -50,7 +51,7 @@ describe("user can create a box and run it", () => {
   });
 
   it("add participants", () => {
-    cy.get(generalElements.submitButton).click();
+    cy.get(generalElements.addParticipants).click({force: true});
     cy.get(invitePage.inviteLink)
       .invoke("text")
       .then((link) => {
@@ -58,6 +59,7 @@ describe("user can create a box and run it", () => {
       });
     cy.clearCookies();
   });
+
   it("approve as user1", () => {
     cy.visit(inviteLink);
     cy.get(generalElements.submitButton).click();
@@ -76,14 +78,14 @@ describe("user can create a box and run it", () => {
       });
     cy.clearCookies();
   });
-
+  
   after("delete box", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
     cy.get(
-      '.layout-1__header-wrapper-fixed > .layout-1__header > .header > .header__items > .layout-row-start > [href="/account/boxes"] > .header-item > .header-item__text > .txt--med'
-    ).click();
-    cy.get(":nth-child(1) > a.base--clickable > .user-card").first().click();
+      '#root > div.layout-1 > section.layout-1__header-wrapper-fixed > header > section > div > div > a:nth-child(1) > div > div.header-item__text'
+    ).click({force: true});
+    cy.get("#root > div.layout-1 > section.layout-1__main-wrapper > div.layout-1__main > section > div:nth-child(2) > div > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-2 > div > div > div:nth-child(1) > a > div").first().click();
     cy.get(
       ".layout-1__header-wrapper-fixed > .layout-1__header-secondary > .header-secondary > .header-secondary__right-item > .toggle-menu-wrapper > .toggle-menu-button > .toggle-menu-button--inner"
     ).click();
