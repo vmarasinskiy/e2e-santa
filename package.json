@@ -14,6 +14,6 @@
     "save-dev": "^0.0.1-security"
   },
   "devDependencies": {
-    "cypress": "^13.6.1"
+    "cypress": "^13.6.2"
   }
 }
