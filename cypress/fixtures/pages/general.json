@@ -1,5 +1,9 @@
 {
   "arrowRight": ".btn-arrow-right",
   "submitButton": ".btn-main.base--clickable",
-  "addParticipants": ".btn-main.base--clickable.btn--no-wrap"
+  "addParticipants": ".btn-main.base--clickable.btn--no-wrap",
+  "firstBox": ".MuiGrid-container > div:first-child",
+  "toggleButton": ".toggle-menu-button--inner",
+  "deleteBox": ":nth-child(2) > .form-page-group__main > .frm-wrapper > .frm",
+  "deleteButton": ".btn-service"
 }
