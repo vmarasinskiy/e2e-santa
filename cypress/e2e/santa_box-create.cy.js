@@ -67,7 +67,22 @@ describe("user can create a box and run it", () => {
 
     cy.approveAsUser(users.user3, wishes);
   });
-    
+
+  it("prize drawing", () => {
+    cy.visit("/login");
+    cy.login(users.userAutor.email, users.userAutor.password);
+    cy.contains("Быстрая жеребьевка").click();
+    cy.get(generalElements.arrowRight).click();
+    cy.get(':nth-child(3) > .frm-wrapper > #input-table-0').type(users.user1.name);
+    cy.get(':nth-child(4) > .frm-wrapper > #input-table-0').type(user.user1.email);
+    cy.get(':nth-child(5) > .frm-wrapper > #input-table-0').type(users.user2.name);
+    cy.get(':nth-child(6) > .frm-wrapper > #input-table-0').type(user.user2.email);
+    cy.get(':nth-child(7) > .frm-wrapper > #input-table-0').type(users.user3.name);
+    cy.get(':nth-child(8) > .frm-wrapper > #input-table-0').type(user.user3.email);
+    cy.get(generalElements.arrowRight).click();
+    cy.get(generalElements.arrowRight).click();
+    cy.contains("Жеребьевка проведена!").should("exist");
+
   after("delete box", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
