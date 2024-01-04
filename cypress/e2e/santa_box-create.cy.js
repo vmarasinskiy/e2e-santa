@@ -82,7 +82,20 @@ describe("user can create a box and run it", () => {
     cy.get(generalElements.arrowRight).click();
     cy.get(generalElements.arrowRight).click();
     cy.contains("Жеребьевка проведена!").should("exist");
+  });
 
+  it('should successfully send DELETE request', () => {
+    cy.request({
+      method: "DELETE",
+      headers: {
+        "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMwMDE1NDMsImlhdCI6MTcwNDM2MjY0MywiZXhwIjoxNzA0MzY2MjQzfQ.LjMtQoi7qqHnaVeNStqhClIiZIJCpyG1OJUqr6gzxiw"
+      },
+      url: "https://staging.lpitko.ru/api/box/e7GQWe"
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+    });
+  });
+ 
   after("delete box", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
