@@ -60,25 +60,14 @@ describe("user can create a box and run it", () => {
     cy.clearCookies();
   });
 
-  it("approve as user1", () => {
-    cy.visit(inviteLink);
-    cy.get(generalElements.submitButton).click();
-    cy.contains("войдите").click();
-    cy.login(users.user1.email, users.user1.password);
-    cy.contains("Создать карточку участника").should("exist");
-    cy.get(generalElements.submitButton).click();
-    cy.get(generalElements.arrowRight).click();
-    cy.get(generalElements.arrowRight).click();
-    cy.get(inviteeBoxPage.wishesInput).type(wishes);
-    cy.get(generalElements.arrowRight).click();
-    cy.get(inviteeDashboardPage.noticeForInvitee)
-      .invoke("text")
-      .then((text) => {
-        expect(text).to.contain("Это — анонимный чат с вашим Тайным Сантой");
-      });
-    cy.clearCookies();
+  it("add users", () => {
+    cy.approveAsUser(users.user1, wishes);
+
+    cy.approveAsUser(users.user2, wishes);
+
+    cy.approveAsUser(users.user3, wishes);
   });
-  
+    
   after("delete box", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
