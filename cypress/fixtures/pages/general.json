@@ -1,5 +1,7 @@
 {
   "arrowRight": ".btn-arrow-right",
   "submitButton": ".btn-main.base--clickable",
-  "addParticipants": ".btn-main.base--clickable.btn--no-wrap"
+  "addParticipants": ".btn-main.base--clickable.btn--no-wrap",
+  "nameParticipants": ":nth-child(1) > .frm-wrapper > #input-table-0",
+  "emailParticipants": ":nth-child(2) > .frm-wrapper > #input-table-0"
 }

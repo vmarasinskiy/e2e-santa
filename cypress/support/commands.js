@@ -51,3 +51,4 @@ Cypress.Commands.add("approveAsUser", (user, wishes) => {
     });
   cy.clearCookies();
 });
+

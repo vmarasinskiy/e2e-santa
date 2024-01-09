@@ -68,48 +68,54 @@ describe("user can create a box and run it", () => {
     cy.approveAsUser(users.user3, wishes);
   });
 
+  it("Add participants manually", () => {
+    cy.visit("/login");
+    cy.login(users.userAutor.email, users.userAutor.password);
+    cy.contains('span.txt--med.txt', 'Коробки').click({ force: true });
+    cy.get(generalElements.firstBox).first().click();
+    cy.get(generalElements.toggleButton).click({ force: true });
+    cy.contains('span.txt--med.txt', 'Добавить участников').click({ force: true });
+    cy.get(generalElements.nameParticipants).type(users.user1.name);
+    cy.get(generalElements.emailParticipants).type(users.user1.email);
+    cy.get('.form-page__buttons > .btn-main').click();
+    cy.contains("Назад к коробке").should("exist");
+  });
+
   it("prize drawing", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
     cy.contains("Быстрая жеребьевка").click();
     cy.get(generalElements.arrowRight).click();
     cy.get(':nth-child(3) > .frm-wrapper > #input-table-0').type(users.user1.name);
-    cy.get(':nth-child(4) > .frm-wrapper > #input-table-0').type(user.user1.email);
+    cy.get(':nth-child(4) > .frm-wrapper > #input-table-0').type(users.user1.email);
     cy.get(':nth-child(5) > .frm-wrapper > #input-table-0').type(users.user2.name);
-    cy.get(':nth-child(6) > .frm-wrapper > #input-table-0').type(user.user2.email);
+    cy.get(':nth-child(6) > .frm-wrapper > #input-table-0').type(users.user2.email);
     cy.get(':nth-child(7) > .frm-wrapper > #input-table-0').type(users.user3.name);
-    cy.get(':nth-child(8) > .frm-wrapper > #input-table-0').type(user.user3.email);
+    cy.get(':nth-child(8) > .frm-wrapper > #input-table-0').type(users.user3.email);
     cy.get(generalElements.arrowRight).click();
     cy.get(generalElements.arrowRight).click();
     cy.contains("Жеребьевка проведена!").should("exist");
   });
 
-  it('should successfully send DELETE request', () => {
-    cy.request({
-      method: "DELETE",
-      headers: {
-        "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMwMDE1NDMsImlhdCI6MTcwNDM2MjY0MywiZXhwIjoxNzA0MzY2MjQzfQ.LjMtQoi7qqHnaVeNStqhClIiZIJCpyG1OJUqr6gzxiw"
-      },
-      url: "https://staging.lpitko.ru/api/box/e7GQWe"
-    }).then((response) => {
-      expect(response.status).to.eq(200);
-    });
-  });
- 
-  after("delete box", () => {
+  it.only('should successfully send DELETE request', () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
-    cy.get(
-      '#root > div.layout-1 > section.layout-1__header-wrapper-fixed > header > section > div > div > a:nth-child(1) > div > div.header-item__text'
-    ).click({force: true});
-    cy.get("#root > div.layout-1 > section.layout-1__main-wrapper > div.layout-1__main > section > div:nth-child(2) > div > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-2 > div > div > div:nth-child(1) > a > div").first().click();
-    cy.get(
-      ".layout-1__header-wrapper-fixed > .layout-1__header-secondary > .header-secondary > .header-secondary__right-item > .toggle-menu-wrapper > .toggle-menu-button > .toggle-menu-button--inner"
-    ).click();
-    cy.contains("Архивация и удаление").click({ force: true });
-    cy.get(":nth-child(2) > .form-page-group__main > .frm-wrapper > .frm").type(
-      "Удалить коробку"
-    );
-    cy.get(".btn-service").click();
+    cy.request({
+      method: "GET",
+      url: "https://staging.lpitko.ru/api/account/boxes/"
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+
+      const boxes = response.body;
+      
+      boxes.forEach(box => {
+        cy.request({
+          method: "DELETE",
+          url: `https://staging.lpitko.ru/api/account/box/${boxes.key}/`
+        }).then(deleteResponse => {
+          expect(deleteResponse.status).to.eq(200); 
+        });
+      });
+    });
   });
 });
