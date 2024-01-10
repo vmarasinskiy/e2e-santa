@@ -122,17 +122,13 @@ describe("user can create a box and run it", () => {
   after("delete box", () => {
     cy.visit("/login");
     cy.login(users.userAutor.email, users.userAutor.password);
-    cy.get(
-      '#root > div.layout-1 > section.layout-1__header-wrapper-fixed > header > section > div > div > a:nth-child(1) > div > div.header-item__text'
-    ).click({force: true});
-    cy.get("#root > div.layout-1 > section.layout-1__main-wrapper > div.layout-1__main > section > div:nth-child(2) > div > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-2 > div > div > div:nth-child(1) > a > div").first().click();
-    cy.get(
-      ".layout-1__header-wrapper-fixed > .layout-1__header-secondary > .header-secondary > .header-secondary__right-item > .toggle-menu-wrapper > .toggle-menu-button > .toggle-menu-button--inner"
-    ).click();
+    cy.contains("span", "Коробки").click();
+    cy.get(generalElements.firstBox).first().click();
+    cy.get(generalElements.toggleButton).click({ force: true });
     cy.contains("Архивация и удаление").click({ force: true });
-    cy.get(":nth-child(2) > .form-page-group__main > .frm-wrapper > .frm").type(
+    cy.get(generalElements.deleteBox).type(
       "Удалить коробку"
     );
-    cy.get(".btn-service").click();
+    cy.get(generalElements.deleteButton).click({ force: true });
   });
 });
